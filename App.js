@@ -1,4 +1,5 @@
 import { StatusBar } from "expo-status-bar";
+import config  from './config';
 import {
   Button,
   Linking,
@@ -22,7 +23,8 @@ export default function App() {
     title: "Clicked ...",
   });
   const [isClicked, setIsClicked] = useState(false);
-  const GOOGLE_MAPS_APIKEY = "AIzaSyCqDIRwcGDeIBdt-yHuC0p8F_y-H468dms";
+  // const GOOGLE_MAPS_APIKEY = "AIzaSyCqDIRwcGDeIBdt-yHuC0p8F_y-H468dms";
+  const GOOGLE_MAPS_APIKEY = config.GOOGLE_MAPS_APIKEY;
   const [UserList, setUserList] = useState([
     { name: "sharjeel 2", age: 256 },
     { name: "Umer", age: 351 },

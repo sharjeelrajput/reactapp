@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Text } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import config  from './../config';
+
 
 const GooglePlacesInput = (props) => {
   return (
@@ -18,7 +20,7 @@ const GooglePlacesInput = (props) => {
         props.updateLocation(position, props.title);
       }}
       query={{
-        key: 'AIzaSyCqDIRwcGDeIBdt-yHuC0p8F_y-H468dms',
+        key: config.GOOGLE_MAPS_APIKEY,
         language: 'en',
       }}
     />
