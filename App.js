@@ -1,49 +1,132 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, Linking, StyleSheet, Text, View , ScrollView} from 'react-native';
-import React, { useState } from 'react';
-import HomeStyle from './styles/home-screen';
+import { StatusBar } from "expo-status-bar";
+import {
+  Button,
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import React, { useState, useRef } from "react";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
+import HomeStyle from "./styles/home-screen";
+import GooglePlacesInput from "./components/google-places-autocomplete";
+import MapViewDirections from "react-native-maps-directions";
 
 export default function App() {
-  const [authorName, setAuthorName] = useState(' React Native App.') ;
-  const [sessionObj, setSessionObj] = useState({ number : 0, title : 'Clicked ...' });
+  const [authorName, setAuthorName] = useState(" React Native App.");
+  const [sessionObj, setSessionObj] = useState({
+    number: 0,
+    title: "Clicked ...",
+  });
   const [isClicked, setIsClicked] = useState(false);
+  const GOOGLE_MAPS_APIKEY = "AIzaSyCqDIRwcGDeIBdt-yHuC0p8F_y-H468dms";
   const [UserList, setUserList] = useState([
-    { name : 'sharjeel' , age : 36},
-    { name : 'Umer' , age : 31},
-    { name : 'Ali' , age : 21},
-    { name : 'Usman' , age : 44},
-    { name : 'Shahan' , age : 361},
-    { name : 'Ghafoor' , age : 44},
-    { name : 'Asim' , age : 41},
-    { name : 'Waqas' , age : 336},
-    { name : 'Asif' , age : 316},
-    { name : 'Brain' , age : 37},
-    { name : 'Darren' , age : 30},
-  ])
-  
-  const buttonClickHandler = () =>{
-    setAuthorName(" Sharjeel is working on it...");        
-    setSessionObj({number : ++sessionObj.number, title : "Clicked ..."});
+    { name: "sharjeel 2", age: 256 },
+    { name: "Umer", age: 351 },
+    { name: "Ali", age: 121 },
+    { name: "Usman", age: 344 },
+    { name: "Shahan", age: 311 },
+    { name: "Ghafoor", age: 124 },
+    { name: "Asim", age: 442 },
+    { name: "Waqas", age: 356 },
+    { name: "Asif", age: 366 },
+    { name: "Brain", age: 187 },
+    { name: "Darren", age: 190 },
+  ]);
+
+  const buttonClickHandler = () => {
+    setAuthorName(" Sharjeel is working on it...");
+    setSessionObj({ number: ++sessionObj.number, title: "Clicked ..." });
     setIsClicked(true);
-  }
+  };
+
+  const { width, height } = Dimensions.get("window");
+  const ASPECT_RATIO = width / height;
+  const LATITUDE_DELTA = 0.02;
+  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+  const mapRef = useRef(MapView);
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [findIt, setfindIt] = useState(false);
+
+  let INITIAL_POSITION = {
+    latitude: 40.76711,
+    longitude: -73.979704,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
+
+  const updateLocation = (position, title) => {
+    if (title !== undefined && title === "origin") {
+      setOrigin(position);      
+    } else {
+      setDestination(position);      
+    }
+    mapRef.current.getCamera().then((mapCam) => {
+      if (mapCam) {
+        mapCam.center = position;
+        mapRef.current.animateCamera(mapCam, { duration: 1000 });
+      }
+    });
+  };
 
   return (
     <View style={HomeStyle.container}>
-      <View style={[HomeStyle.view1, HomeStyle.centerContent]}>
-        <Text style={HomeStyle.textD}> Text 1 {UserList.length} : </Text>
+      <View style={[HomeStyle.autocomplete, HomeStyle.origin]}>
+        <GooglePlacesInput title="origin" updateLocation={updateLocation} />
       </View>
-      <ScrollView style={[HomeStyle.listPanel]}>
+      <View style={[HomeStyle.autocomplete, HomeStyle.destination]}>
+        <GooglePlacesInput
+          title="Destination"
+          updateLocation={updateLocation}
+        />
+      </View>
+      <View style={[HomeStyle.view1, HomeStyle.centerContent]}>
+        <MapView
+          ref={mapRef}
+          style={HomeStyle.map}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={INITIAL_POSITION}
+        >
+          {origin && <Marker title="Start point" coordinate={origin}></Marker>}
+          {destination && (
+            <Marker title="sharjeel here" coordinate={destination}></Marker>
+          )}
+          { origin && destination && findIt && 
+            <MapViewDirections
+              origin={origin}
+              destination={destination}
+              apikey={GOOGLE_MAPS_APIKEY}
+            />
+          }
+        </MapView>
+        <View>
+          <TouchableOpacity
+            style={HomeStyle.searchBtn}
+            onPress={(e) => {
+              setfindIt(true);
+            }}
+          >
+            <Text>Search Directions</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* <ScrollView style={[HomeStyle.listPanel]}>
       {
         UserList.map(user => {
           return (
             <View style={[HomeStyle.centerContent, HomeStyle.listStyle]}>
-              <Text style={[HomeStyle.textD]}> {user.name} - {user.age}</Text>
+              <Text style={[HomeStyle.textD]} key={user.age.toString()}> {user.name} - {user.age}</Text>
           </View>
           )
         })
       }
-      </ScrollView>
-    
+      </ScrollView> */}
+
       {/* <Text style={HomeStyle.heading}>{authorName}</Text>
       <Button title=" YouTube Channel" onPress={buttonClickHandler}>        
       </Button>

@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -60,7 +61,36 @@ const styles = StyleSheet.create({
         borderBottomColor: '#fff',        
         borderWidth: 1,
         
-    }
+    },
+    autocomplete: {
+        position: 'absolute',
+        width: '90%',
+        backgroundColor: 'white',
+        shadowColor: 'black',
+        shadowOffset: { width : 2 , height : 2 },
+        elevation: 4,
+        shadowOpacity: 0.8,
+        shadowRadius: 4,
+        
+        padding: 10,
+        borderRadius: 8,
+        zIndex: 100
+    },
+    origin: {
+        top: Constants.statusBarHeight,
+    },
+    destination: {
+        top: 120,
+    },
+    map: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+      },
+      searchBtn : {
+        backgroundColor: '#bbb',
+        paddingVertical: 8,
+        
+      }
   });
 
   export default styles;

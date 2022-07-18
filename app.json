@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "impertial",
+    "name": "impertial.poomz.com",
     "slug": "impertial",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,7 +10,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
+    },    
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -24,6 +24,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyCqDIRwcGDeIBdt-yHuC0p8F_y-H468dms"
+        }
       }
     },
     "web": {
