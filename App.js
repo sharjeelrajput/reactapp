@@ -43,6 +43,7 @@ export default function App() {
     setAuthorName(" Sharjeel is working on it...");
     setSessionObj({ number: ++sessionObj.number, title: "Clicked ..." });
     setIsClicked(true);
+
   };
 
   const { width, height } = Dimensions.get("window");
@@ -71,6 +72,7 @@ export default function App() {
       if (mapCam) {
         mapCam.center = position;
         mapRef.current.animateCamera(mapCam, { duration: 1000 });
+        mapRef.current.fitToCoordinates([origin, destination]);
       }
     });
   };
@@ -110,6 +112,7 @@ export default function App() {
             style={HomeStyle.searchBtn}
             onPress={(e) => {
               setfindIt(true);
+              mapRef.current.fitToCoordinates([origin, destination]);
             }}
           >
             <Text>Search Directions</Text>
